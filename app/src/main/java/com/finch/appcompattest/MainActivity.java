@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity
 			case R.id.nav_favorite:
 				fTrans.replace(R.id.contentLayout, favoriteFrag);
 		}
-		fTrans.addToBackStack(null);
+		//fTrans.addToBackStack(null);
 		fTrans.commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

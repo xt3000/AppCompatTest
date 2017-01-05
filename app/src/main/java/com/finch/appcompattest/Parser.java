@@ -7,26 +7,30 @@ import java.io.IOException;
 import java.util.ArrayList;
 import org.jsoup.select.Elements;
 import org.jsoup.Jsoup;
+import java.util.*;
 
-public class Parser extends AsyncTask<Void,Void,ArrayList<String>[]>
+public class Parser extends AsyncTask<Void,Void,ArrayList<Map<String,Object>>>
 {
 	String title;
 
 	@Override
-	protected ArrayList<String>[] doInBackground(Void... args)
+	protected ArrayList<Map<String,Object>> doInBackground(Void... args)
 	{
-		ArrayList<String> arrayTitle = new ArrayList<String>();
-		ArrayList<String> arrayLink = new ArrayList<String>();
+		ArrayList<Map<String,Object>> arrayTitle = new ArrayList<>();
+		Map<String,Object> m;
 		Document doc=null;
 		
 		try
 		{
 			doc=Jsoup.connect("http://startandroid.ru/ru/uroki/vse-uroki-spiskom.html").get();
 			Elements elems = doc.select("td.list-title");
+			
 			for (Element elem : elems)
 			{
-				arrayTitle.add(elem.text());
-				arrayLink.add(elem.select("a[href]").first().attr("abs:href"));
+				m=new TreeMap<>();
+				m.put("title",elem.text());
+				m.put("link",elem.select("a[href]").first().attr("abs:href"));
+				arrayTitle.add(m);
 			}
 		
 		} catch (IOException e) 
@@ -34,8 +38,7 @@ public class Parser extends AsyncTask<Void,Void,ArrayList<String>[]>
 				e.printStackTrace();
 			}
 			
-		ArrayList<String>[] arrayList= {arrayTitle,arrayLink};
 			
-		return arrayList;
+		return arrayTitle;
 	}
 }
