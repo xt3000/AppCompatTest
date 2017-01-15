@@ -16,6 +16,8 @@ import com.finch.appcompattest.fragments.*;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentManager;
+import java.util.*;
+import java.util.concurrent.*;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -24,12 +26,29 @@ public class MainActivity extends AppCompatActivity
 			HomeFrag homeFrag;
 			HistoryFrag historyFrag;
 			FavoriteFrag favoriteFrag;
+			Parser parser;
+			ItemObj itemObj;
 			
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 		
+		parser = new Parser();
+		parser.execute();
+		try
+		{
+			itemObj = parser.get();
+		}
+		catch (ExecutionException e)
+		{}
+		catch (InterruptedException e)
+		{}
+		
+		///
+	//	RVAdapter adapter = new RVAdapter(itemObj.aTitle);
+		///
+
 		homeFrag = new HomeFrag();
 		historyFrag = new HistoryFrag();
 		favoriteFrag = new FavoriteFrag();
@@ -98,6 +117,10 @@ public class MainActivity extends AppCompatActivity
         switch (id)
 		{
 			case R.id.nav_home:
+				Bundle bundle = new Bundle();
+				bundle.putSerializable("itemObj", itemObj);
+				homeFrag.setArguments(bundle);
+				
 				fTrans.replace(R.id.contentLayout, homeFrag);
 				break;
 			case R.id.nav_history:

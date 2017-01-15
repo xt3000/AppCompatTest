@@ -9,15 +9,17 @@ import org.jsoup.select.Elements;
 import org.jsoup.Jsoup;
 import java.util.*;
 
-public class Parser extends AsyncTask<Void,Void,ArrayList<Map<String,Object>>>
+public class Parser extends AsyncTask<Void,Void,ItemObj>
 {
 	String title;
+	ItemObj itemObj;
 
 	@Override
-	protected ArrayList<Map<String,Object>> doInBackground(Void... args)
+	protected ItemObj doInBackground(Void... args)
 	{
-		ArrayList<Map<String,Object>> arrayTitle = new ArrayList<>();
-		Map<String,Object> m;
+		ArrayList<String> aTitle = new ArrayList<>();
+		ArrayList<String> aLink = new ArrayList<>();
+		
 		Document doc=null;
 		
 		try
@@ -27,10 +29,8 @@ public class Parser extends AsyncTask<Void,Void,ArrayList<Map<String,Object>>>
 			
 			for (Element elem : elems)
 			{
-				m=new TreeMap<>();
-				m.put("title",elem.text());
-				m.put("link",elem.select("a[href]").first().attr("abs:href"));
-				arrayTitle.add(m);
+				aTitle.add(elem.text());
+				aLink.add(elem.select("a[href]").first().attr("abs:href"));
 			}
 		
 		} catch (IOException e) 
@@ -38,7 +38,7 @@ public class Parser extends AsyncTask<Void,Void,ArrayList<Map<String,Object>>>
 				e.printStackTrace();
 			}
 			
-			
-		return arrayTitle;
+			itemObj = new ItemObj(aTitle,aLink);
+		return itemObj;
 	}
 }
