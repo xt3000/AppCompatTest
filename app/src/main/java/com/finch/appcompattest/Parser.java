@@ -20,6 +20,7 @@ public class Parser extends AsyncTask<Void,Void,ItemObj>
 		ArrayList<String> aTitle = new ArrayList<>();
 		ArrayList<String> aLink = new ArrayList<>();
 		
+		
 		Document doc=null;
 		
 		try

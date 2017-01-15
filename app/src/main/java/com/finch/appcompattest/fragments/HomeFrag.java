@@ -10,6 +10,9 @@ import com.finch.appcompattest.RVAdapter;
 import java.util.ArrayList;
 import android.support.v7.widget.LinearLayoutManager;
 import com.finch.appcompattest.ItemObj;
+import com.finch.appcompattest.*;
+import android.widget.*;
+import android.widget.AdapterView.*;
 
 public class HomeFrag extends Fragment
 {
@@ -44,6 +47,15 @@ public class HomeFrag extends Fragment
 		rv.setHasFixedSize(true);
 		
 		rv.setAdapter(adapter);
+		rv.addOnItemTouchListener(new RecyclerClickListener(getActivity(), new RecyclerClickListener.OnItemClickListener()
+		{
+			@Override
+			public void onItemClick(View v, int pos)
+			{
+				String url = itemObj.aLink.get(pos);
+				Toast.makeText(getActivity(), url, Toast.LENGTH_SHORT).show();
+			}
+		}));
 		// TODO: Implement this method
 		return v;
 	}
