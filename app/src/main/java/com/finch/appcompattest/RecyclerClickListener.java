@@ -14,32 +14,45 @@ public class RecyclerClickListener implements RecyclerView.OnItemTouchListener
 		// TODO: Implement this method
 	}
 
-
     private OnItemClickListener mListener;
     GestureDetector mGestureDetector;
 
-    public interface OnItemClickListener {
+    public interface OnItemClickListener 
+	{
         public void onItemClick(View view, int position);
     }
 
-    public RecyclerClickListener(Context context, OnItemClickListener listener) {
+    public RecyclerClickListener(Context context, OnItemClickListener listener) 
+	{
         mListener = listener;
-        mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
-				@Override public boolean onSingleTapUp(MotionEvent e) {
-					return true;
-				}
-			});
+        mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() 
+		
+		{
+			@Override 
+			public boolean onSingleTapUp(MotionEvent e) 
+			{
+				return true;
+			}
+		});
     }
 
-    @Override public boolean onInterceptTouchEvent(RecyclerView view, MotionEvent e) {
+    @Override
+	public boolean onInterceptTouchEvent(RecyclerView view, MotionEvent e) 
+	{
         View childView = view.findChildViewUnder(e.getX(), e.getY());
-        if (childView != null && mListener != null && mGestureDetector.onTouchEvent(e)) {
+        if (childView != null && mListener != null && mGestureDetector.onTouchEvent(e) && view.getScrollState() == RecyclerView.SCROLL_STATE_IDLE) 
+		{
             mListener.onItemClick(childView, view.getChildPosition(childView));
             return true;
         }
         return false;
     }
 
-    @Override public void onTouchEvent(RecyclerView view, MotionEvent motionEvent) { }
+    @Override 
+	public void onTouchEvent(RecyclerView view, MotionEvent motionEvent) 
+	{ 
+	///
+	}
 
+	
 }
