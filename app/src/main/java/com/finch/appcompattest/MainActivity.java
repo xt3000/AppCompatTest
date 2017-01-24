@@ -18,11 +18,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentManager;
 import java.util.*;
 import java.util.concurrent.*;
+import android.widget.*;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 			FragmentTransaction fTrans;
+			ArticleFrag articleFrag;
 			HomeFrag homeFrag;
 			HistoryFrag historyFrag;
 			FavoriteFrag favoriteFrag;
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity
 		///
 	//	RVAdapter adapter = new RVAdapter(itemObj.aTitle);
 		///
-
+		
 		homeFrag = new HomeFrag();
 		historyFrag = new HistoryFrag();
 		favoriteFrag = new FavoriteFrag();
@@ -136,4 +138,24 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+	
+	//
+	public void test()
+	{
+		Toast.makeText(this, "test", Toast.LENGTH_SHORT).show();
+	}
+	//
+	
+	public void articleFragReplace(String url)
+	{
+		fTrans = getSupportFragmentManager().beginTransaction();
+		articleFrag = new ArticleFrag();
+		Bundle bundle = new Bundle();
+		bundle.putString("url", url);
+		articleFrag.setArguments(bundle);
+		fTrans.replace(R.id.contentLayout, articleFrag);
+		fTrans.addToBackStack(null);
+		fTrans.commit();
+		
+	}
 }

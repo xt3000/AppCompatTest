@@ -13,12 +13,13 @@ import com.finch.appcompattest.ItemObj;
 import com.finch.appcompattest.*;
 import android.widget.*;
 import android.widget.AdapterView.*;
+import android.app.*;
 
 public class HomeFrag extends Fragment
 {
 	RecyclerView rv;
-	ItemObj itemObj;
-	public RVAdapter adapter;
+	ItemObj itemObj = null;
+	public RVAdapter adapter = null;
 	public ArrayList<String> aTitle;
 	
 	
@@ -26,8 +27,8 @@ public class HomeFrag extends Fragment
 	public void onCreate(Bundle savedInstanceState)
 	{
 		Bundle args = getArguments();
-		itemObj = (ItemObj) args.getSerializable("itemObj");
-		adapter = new RVAdapter(itemObj.aTitle);
+		if (args != null) itemObj = (ItemObj) args.getSerializable("itemObj");
+		if (itemObj != null) adapter = new RVAdapter(itemObj.aTitle);
 		
 		
 		// TODO: Implement this method
@@ -37,7 +38,7 @@ public class HomeFrag extends Fragment
 	
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+	public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		View v = inflater.inflate(com.finch.appcompattest.R.layout.main_list, null);
 		rv = (RecyclerView) v.findViewById(com.finch.appcompattest.R.id.rv);
@@ -53,7 +54,13 @@ public class HomeFrag extends Fragment
 			public void onItemClick(View v, int pos)
 			{
 				String url = itemObj.aLink.get(pos);
-				Toast.makeText(getActivity(), url, Toast.LENGTH_SHORT).show();
+				//Toast.makeText(getActivity(), url, Toast.LENGTH_SHORT).show();
+				if (getActivity()!=null)
+				{
+					MainActivity act = (MainActivity) getActivity();
+					act.articleFragReplace(url);
+					
+				}
 			}
 		}));
 		// TODO: Implement this method

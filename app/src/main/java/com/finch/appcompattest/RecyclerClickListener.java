@@ -4,6 +4,7 @@ import android.view.GestureDetector;
 import android.view.View;
 import android.content.Context;
 import android.view.MotionEvent;
+import android.graphics.drawable.*;
 
 public class RecyclerClickListener implements RecyclerView.OnItemTouchListener
 {
@@ -42,6 +43,11 @@ public class RecyclerClickListener implements RecyclerView.OnItemTouchListener
         View childView = view.findChildViewUnder(e.getX(), e.getY());
         if (childView != null && mListener != null && mGestureDetector.onTouchEvent(e) && view.getScrollState() == RecyclerView.SCROLL_STATE_IDLE) 
 		{
+			childView.setClickable(true);
+			childView.setFocusable(true);
+			childView.setFocusableInTouchMode(true);
+			childView.setAlpha(100);
+			////
             mListener.onItemClick(childView, view.getChildPosition(childView));
             return true;
         }
