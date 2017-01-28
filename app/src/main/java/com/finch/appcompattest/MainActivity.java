@@ -19,6 +19,7 @@ import android.support.v4.app.FragmentManager;
 import java.util.*;
 import java.util.concurrent.*;
 import android.widget.*;
+import java.security.*;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -29,23 +30,24 @@ public class MainActivity extends AppCompatActivity
 			HistoryFrag historyFrag;
 			FavoriteFrag favoriteFrag;
 			Parser parser;
-			ItemObj itemObj;
+			ItemObj itemObj = new ItemObj();
 			
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 		
-		parser = new Parser();
-		parser.execute();
 		try
 		{
-			itemObj = parser.get();
+			itemObj = (ItemObj)savedInstanceState.getSerializable("itemObj");
+		} 
+		catch (Exception e) {}
+		Toast.makeText(this, "onCreate(): " + itemObj.isInited(), Toast.LENGTH_SHORT).show();
+		
+		if (!itemObj.isInited())
+		{
+			Parsing();
 		}
-		catch (ExecutionException e)
-		{}
-		catch (InterruptedException e)
-		{}
 		
 		///
 	//	RVAdapter adapter = new RVAdapter(itemObj.aTitle);
@@ -158,4 +160,30 @@ public class MainActivity extends AppCompatActivity
 		fTrans.commit();
 		
 	}
+	
+	public void Parsing()
+	{
+		parser = new Parser();
+		parser.execute();
+		try
+		{
+			itemObj = parser.get();
+		}
+		catch (ExecutionException e)
+		{}
+		catch (InterruptedException e)
+		{}
+		itemObj.Init();
+		Toast.makeText(this, "Parsing(): " + itemObj.isInited(), Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState)
+	{
+		// TODO: Implement this method
+		super.onSaveInstanceState(outState);
+		outState.putSerializable("itemObj", itemObj);
+	}
+	
+	
 }
