@@ -14,7 +14,7 @@
 	tools:context="com.finch.appcompattest.MainActivity"
 	tools:showIn="@layout/app_bar_main"
 	android:orientation="vertical"
-	android:background="#FFFFFF">
+	android:background="#F0F0F0">
 
 	<FrameLayout
 		android:layout_height="wrap_content"

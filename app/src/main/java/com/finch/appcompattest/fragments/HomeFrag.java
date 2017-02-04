@@ -14,6 +14,7 @@ import com.finch.appcompattest.*;
 import android.widget.*;
 import android.widget.AdapterView.*;
 import android.app.*;
+import android.graphics.*;
 
 public class HomeFrag extends Fragment
 {
@@ -43,6 +44,9 @@ public class HomeFrag extends Fragment
 		View v = inflater.inflate(com.finch.appcompattest.R.layout.main_list, null);
 		rv = (RecyclerView) v.findViewById(com.finch.appcompattest.R.id.rv);
 		
+		LinearLayout ll = (LinearLayout)getActivity().findViewById(com.finch.appcompattest.R.id.content_main);
+		ll.setBackgroundColor(0xFFf0f0f0);
+		
 		LinearLayoutManager llm = new LinearLayoutManager(getActivity());
 		rv.setLayoutManager(llm);
 		rv.setHasFixedSize(true);
@@ -58,7 +62,7 @@ public class HomeFrag extends Fragment
 				if (getActivity()!=null)
 				{
 					MainActivity act = (MainActivity) getActivity();
-					act.articleFragReplace(url);
+					act.articleFragReplace(url, itemObj.aTitle.get(pos));
 					
 				}
 			}

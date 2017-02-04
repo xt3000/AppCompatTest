@@ -20,6 +20,7 @@ import java.util.*;
 import java.util.concurrent.*;
 import android.widget.*;
 import java.security.*;
+import android.transition.*;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -49,18 +50,11 @@ public class MainActivity extends AppCompatActivity
 			Parsing();
 		}
 		
-		///
-	//	RVAdapter adapter = new RVAdapter(itemObj.aTitle);
-		///
-		
-		homeFrag = new HomeFrag();
-		historyFrag = new HistoryFrag();
-		favoriteFrag = new FavoriteFrag();
-		
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+		fab.hide();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,6 +115,7 @@ public class MainActivity extends AppCompatActivity
         switch (id)
 		{
 			case R.id.nav_home:
+				homeFrag = new HomeFrag();
 				Bundle bundle = new Bundle();
 				bundle.putSerializable("itemObj", itemObj);
 				homeFrag.setArguments(bundle);
@@ -128,9 +123,11 @@ public class MainActivity extends AppCompatActivity
 				fTrans.replace(R.id.contentLayout, homeFrag);
 				break;
 			case R.id.nav_history:
+				historyFrag = new HistoryFrag();
 				fTrans.replace(R.id.contentLayout, historyFrag);
 				break;
 			case R.id.nav_favorite:
+				favoriteFrag = new FavoriteFrag();
 				fTrans.replace(R.id.contentLayout, favoriteFrag);
 		}
 		//fTrans.addToBackStack(null);
@@ -148,13 +145,26 @@ public class MainActivity extends AppCompatActivity
 	}
 	//
 	
-	public void articleFragReplace(String url)
+	public void articleFragReplace(String url, String Title)
 	{
+		TextView tvItemTitle=(TextView)findViewById(R.id.tvItemName);
+		
 		fTrans = getSupportFragmentManager().beginTransaction();
 		articleFrag = new ArticleFrag();
+		
+		
+		
+	//	articleFrag.setSharedElementEnterTransition(new articleTrans());
+		articleFrag.setEnterTransition(new AutoTransition());
+		articleFrag.setExitTransition(new AutoTransition());
+		articleFrag.setReturnTransition(new AutoTransition());
+	//	articleFrag.setAllowReturnTransitionOverlap(new articleTrans());
+		
 		Bundle bundle = new Bundle();
 		bundle.putString("url", url);
+		bundle.putString("title", Title);
 		articleFrag.setArguments(bundle);
+		fTrans.addSharedElement(tvItemTitle, "titler");
 		fTrans.replace(R.id.contentLayout, articleFrag);
 		fTrans.addToBackStack(null);
 		fTrans.commit();
